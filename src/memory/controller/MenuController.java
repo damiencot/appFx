@@ -64,7 +64,7 @@ public class MenuController{
         Optional<String> resultat = textInputDialog.showAndWait();
         resultat.ifPresent(name->{
             //Regex: Un nombre entre 2 et 9, avec autre chose derriere
-            if (name.matches("[2-9]+") && Integer.valueOf(name) < 21)
+            if (name.matches("[0-9]+") && Integer.valueOf(name) < 21 && Integer.valueOf(name) > 1)
             {
                 this.nbrPair = Integer.valueOf(name);
             }

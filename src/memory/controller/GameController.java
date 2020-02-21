@@ -1,9 +1,12 @@
 package memory.controller;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import memory.model.Player;
@@ -48,11 +51,22 @@ public class GameController extends GridPane {
             public void handle(WindowEvent windowEvent) {
 
                 GameController.this.gameStage.show();
+                GameController.this.gameStage.setIconified(false);
+
+                Screen screen = Screen.getPrimary();
+                Rectangle2D bounds = screen.getVisualBounds();
+
+                GameController.this.gameStage.setX(bounds.getMinX());
+                GameController.this.gameStage.setY(bounds.getMinY());
+                GameController.this.gameStage.setWidth(bounds.getWidth());
+                GameController.this.gameStage.setHeight(bounds.getHeight());
+
                 ///Crée un tab de score pour les joueurs
                 GameController.this.tabScoreView = new TabScoreView(GameController.this.playerArrayList);
                 GameController.this.add(GameController.this.tabScoreView,1,0);
             }
         });
+        this.gameStage.setIconified(true);
 
         configStage.show();
         this.gameStage.hide();
