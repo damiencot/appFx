@@ -46,7 +46,7 @@ public class GridView extends GridPane {
 
         }
 
-        //Collections.shuffle(cards);
+        Collections.shuffle(cards);
 
         drawnGrille();
 

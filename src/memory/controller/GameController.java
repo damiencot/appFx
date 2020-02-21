@@ -93,6 +93,33 @@ public class GameController extends GridPane {
             }
         });
 
+        Button btnAbandon = new Button("Abandonner");
+        btnAbandon.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Alert abandon = new Alert(Alert.AlertType.CONFIRMATION,"Vous avez abandonnez");
+                abandon.showAndWait();
+                System.exit(0);
+            }
+        });
+
+        Button btnMelanger = new Button("Recommencer");
+        btnMelanger.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                GameController.this.getChildren().remove(GameController.this.gridView);
+                for (Player player: playerArrayList) {
+                    player.setTour(false);
+                    player.setScore(0);
+                }
+
+                playerActual = playerArrayList.size()-1;
+                GameController.this.gridView = new GridView(eventClickMouse, nbrPair);
+                GameController.this.add(GameController.this.gridView,0,0);
+                nextTour();
+            }
+        });
+
 
         Button btnNext = new Button("Joueur Suivant");
         btnNext.setOnAction(new EventHandler<ActionEvent>() {
@@ -128,6 +155,9 @@ public class GameController extends GridPane {
         this.add(btnQuite,1,1);
         this.add(btnNext,0,1);
         this.add(btnSwitch,2,1);
+        this.add(btnAbandon,2,2);
+        this.add(btnMelanger,2,3);
+
 
 
 
