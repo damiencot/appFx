@@ -17,10 +17,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         MenuController menu = new MenuController();
-        GameController root = new GameController();
 
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
     }
 
 

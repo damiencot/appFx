@@ -8,7 +8,7 @@ import memory.controller.GameController;
 import memory.model.Card;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
 
 
 public class GridView extends GridPane {
@@ -19,46 +19,46 @@ public class GridView extends GridPane {
     private ArrayList<CardView> cardView = new ArrayList<>();
 
 
-    public GridView(GameController.EventClickMouse t) {
+    public GridView(GameController.EventClickMouse t, int nbrPair) {
+
+        int ligne = 0;
+        int colonne = 0;
+        ArrayList<Card> cards = new ArrayList<>();
+
+        for (int i = 1; i < nbrPair + 1; i++) {
+            Card card1 = new Card();
+            card1.setId(i);
+            card1.setPath("image/"+i+".jpg");
+
+            cards.add(card1);
 
 
-        Card card1 = new Card();
-        card1.setId(1);
-        card1.setPath("image/1.jpeg");
-        CardView cv1 = new CardView(card1, t);
+            Card card2 = new Card();
+            card2.setId(i);
+            card2.setPath("image/"+i+".jpg");
 
-        Card card2 = new Card();
-        card2.setId(1);
-        card2.setPath("image/1.jpeg");
-        CardView cv2 = new CardView(card2, t);
+            cards.add(card2);
 
 
-        Card card3 = new Card();
-        card3.setId(2);
-        card3.setPath("image/2.jpeg");
-        CardView cv3 = new CardView(card3, t);
+        }
 
+        Collections.shuffle(cards);
 
-        Card card4 = new Card();
-        card4.setId(2);
-        card4.setPath("image/2.jpeg");
-        CardView cv4 = new CardView(card4,t);
+        for (Card card: cards) {
+            CardView cv = new CardView(card, t);
 
-
-        /*
-        1er:Colonne
-        2e:Ligne
-         */
-        this.add(cv1,0,0);
-        this.add(cv2,0,1);
-        this.add(cv3,1,0);
-        this.add(cv4,1,1);
-
-
-
+            if (colonne == 4){
+                colonne =0;
+                ligne++;
+            }
+            /*
+            1er:Colonne
+            2e:Ligne
+             */
+            this.add(cv,colonne,ligne);
+            colonne++;
+        }
 
     }
-
-
 
 }

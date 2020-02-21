@@ -1,8 +1,11 @@
 package memory.controller;
 
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import memory.model.Player;
 import memory.view.CardView;
 import memory.view.GridView;
@@ -21,31 +24,40 @@ public class GameController extends GridPane {
     private  CardView cardActual;
     private EventClickMouse eventClickMouse;
     private int playerActual;
+    private int nbrPair;
+    private Stage gameStage;
 
-    public GameController() {
+    public GameController(int nbrPlayer,int nbrPair, Stage gameStage) {
         super();
+        this.nbrPair = nbrPair;
         this.cardActual = null;
+        this.gameStage = gameStage;
         ///Crée l'event et on le charge
         this.eventClickMouse = new EventClickMouse();
         this.playerActual = 0;
-        GridView gridView = new GridView(this.eventClickMouse);
+        GridView gridView = new GridView(this.eventClickMouse, nbrPair);
         //Grille dans mon controlleur
         this.add(gridView,0,0);
         this.playerArrayList = new ArrayList<>();
 
-        Player player1 = new Player();
-        player1.setName("J1");
-        player1.setTour(true);
+        Stage configStage = new Stage();
+        configStage.setScene(new Scene(new PlayerController(nbrPlayer,playerArrayList,configStage)));
 
-        Player player2 = new Player();
-        player2.setName("J2");
+        configStage.setOnHidden(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
 
-        this.playerArrayList.add(player1);
-        this.playerArrayList.add(player2);
+                GameController.this.gameStage.show();
+                ///Crée un tab de score pour les joueurs
+                GameController.this.tabScoreView = new TabScoreView(GameController.this.playerArrayList);
+                GameController.this.add(GameController.this.tabScoreView,1,0);
+            }
+        });
 
-        ///Crée un tab de score pour les joueurs
-        this.tabScoreView = new TabScoreView(this.playerArrayList);
-        this.add(this.tabScoreView,1,0);
+        configStage.show();
+        this.gameStage.hide();
+
+
     }
 
     public void nextTour()

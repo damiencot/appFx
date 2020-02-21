@@ -3,9 +3,12 @@ package memory.view;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import memory.controller.GameController;
 import memory.model.Card;
 
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -30,6 +33,12 @@ public class CardView extends Pane {
     public CardView(Card card, GameController.EventClickMouse clickMouse) {
         this.card = card;
         this.eventClickMouse = clickMouse;
+
+        Rectangle rectangle = new Rectangle(50,50);
+        rectangle.setFill(null);
+        rectangle.setStroke(Color.BLACK);
+        this.getChildren().add(rectangle);
+
         try {
             FileInputStream getImage = new FileInputStream(card.getPath());
             //Creation d'une image
