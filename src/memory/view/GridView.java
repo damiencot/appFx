@@ -25,6 +25,9 @@ public class GridView extends GridPane {
         int colonne = 0;
         ArrayList<Card> cards = new ArrayList<>();
 
+        /*
+        Boucle sur les images
+         */
         for (int i = 1; i < nbrPair + 1; i++) {
             Card card1 = new Card();
             card1.setId(i);
@@ -42,7 +45,7 @@ public class GridView extends GridPane {
 
         }
 
-        Collections.shuffle(cards);
+        //Collections.shuffle(cards);
 
         for (Card card: cards) {
             CardView cv = new CardView(card, t);

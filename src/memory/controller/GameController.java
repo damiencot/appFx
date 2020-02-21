@@ -4,6 +4,8 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
@@ -15,6 +17,7 @@ import memory.view.GridView;
 import memory.view.TabScoreView;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 /*
@@ -29,6 +32,7 @@ public class GameController extends GridPane {
     private int playerActual;
     private int nbrPair;
     private Stage gameStage;
+    private int nbrTrouver = 0;
 
     public GameController(int nbrPlayer,int nbrPair, Stage gameStage) {
         super();
@@ -114,6 +118,35 @@ public class GameController extends GridPane {
                             GameController.this.playerArrayList.get(GameController.this.playerActual).addScore();
                             cardView.setTrouver(true);
                             GameController.this.cardActual.setTrouver(true);
+                            nbrTrouver++;
+                            if(nbrTrouver == nbrPair)
+                            {
+                                int scoreMax = 0;
+                                Player playerWin = null;
+                                for (Player player: playerArrayList) {
+                                    if(player.getScore()> scoreMax)
+                                    {
+                                        playerWin = player;
+                                        scoreMax = player.getScore();
+                                    }
+                                }
+                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Bravo :" + playerWin.getName());
+
+                                ButtonType buttonQuit = new ButtonType("Quitter");
+                                ButtonType buttonReplay = new ButtonType("Rejouer");
+
+                                alert.getButtonTypes().clear();
+                                alert.getButtonTypes().addAll(buttonReplay,buttonQuit);
+                                Optional<ButtonType> buttonType = alert.showAndWait();
+                                if(buttonType.get() == buttonReplay)
+                                {
+                                    gameStage.hide();
+                                    MenuController menu = new MenuController();
+                                }else
+                                {
+                                    System.exit(0);
+                                }
+                            }
                         } else {
                             //Masque les cartes qui ne sont pas bonne
                             cardView.masquerImage();
