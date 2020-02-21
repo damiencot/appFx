@@ -1,12 +1,10 @@
 package memory.controller;
 
-import memory.view.poubelle;
 
 public class CardController {
 
     private int identifiant ;
     static int clickCount=2;
-    private poubelle poubelle;
 
 
 

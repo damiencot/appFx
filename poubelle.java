@@ -1,3 +1,4 @@
+/*
 package memory.view;
 
 import com.sun.javafx.menu.MenuItemBase;
@@ -167,3 +168,4 @@ public class poubelle extends StackPane {
 
 
 }
+*/

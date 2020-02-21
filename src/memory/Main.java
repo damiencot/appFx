@@ -6,12 +6,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import memory.controller.GameController;
+import memory.controller.MenuController;
 
 public class Main extends Application {
 
+    /*
+        Demarrage de l'application
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        MenuController menu = new MenuController();
         GameController root = new GameController();
 
         primaryStage.setScene(new Scene(root));
