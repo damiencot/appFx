@@ -65,6 +65,12 @@ public class PlayerController extends GridPane {
                 }
             }
         });
+
+
+
         this.add(btnSave,0,ligne);
+
     }
+
+
 }

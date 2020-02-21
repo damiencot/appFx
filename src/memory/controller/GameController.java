@@ -1,10 +1,12 @@
 package memory.controller;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -72,6 +74,36 @@ public class GameController extends GridPane {
         });
         this.gameStage.setIconified(true);
 
+        Button btnQuite = new Button("Quitter");
+        btnQuite.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.exit(0);
+            }
+        });
+
+
+        Button btnNext = new Button("Joueur Suivant");
+        btnNext.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                nextTour();
+            }
+        });
+
+
+        Button btnSwitch = new Button("Echanger");
+        btnSwitch.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+            }
+        });
+
+        this.add(btnQuite,1,1);
+        this.add(btnNext,0,1);
+
+
         configStage.show();
         this.gameStage.hide();
 
@@ -134,6 +166,7 @@ public class GameController extends GridPane {
 
                                 ButtonType buttonQuit = new ButtonType("Quitter");
                                 ButtonType buttonReplay = new ButtonType("Rejouer");
+
 
                                 alert.getButtonTypes().clear();
                                 alert.getButtonTypes().addAll(buttonReplay,buttonQuit);
