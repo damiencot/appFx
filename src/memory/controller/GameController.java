@@ -8,17 +8,20 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import memory.model.Card;
 import memory.model.Player;
 import memory.view.CardView;
 import memory.view.GridView;
 import memory.view.TabScoreView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 
 
@@ -29,22 +32,30 @@ public class GameController extends GridPane {
 
     private ArrayList<Player> playerArrayList;
     private TabScoreView tabScoreView;
-    private  CardView cardActual;
+    private CardView cardActual;
     private EventClickMouse eventClickMouse;
     private int playerActual;
     private int nbrPair;
     private Stage gameStage;
     private int nbrTrouver = 0;
+    private CardView tmpCard;
+    private boolean modeEchange;
+    private GridView gridView;
+    private Label statusChange;
 
     public GameController(int nbrPlayer,int nbrPair, Stage gameStage) {
         super();
         this.nbrPair = nbrPair;
         this.cardActual = null;
         this.gameStage = gameStage;
+        this.tmpCard = null;
+        this.modeEchange = false;
+        this.statusChange = new Label();
+        this.add(this.statusChange,0,3);
         ///Crée l'event et on le charge
         this.eventClickMouse = new EventClickMouse();
         this.playerActual = 0;
-        GridView gridView = new GridView(this.eventClickMouse, nbrPair);
+        this.gridView = new GridView(this.eventClickMouse, nbrPair);
         //Grille dans mon controlleur
         this.add(gridView,0,0);
         this.playerArrayList = new ArrayList<>();
@@ -96,12 +107,28 @@ public class GameController extends GridPane {
         btnSwitch.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                int scoreMin = Integer.MAX_VALUE;
+                Player playerLow = null;
+                for (Player player : playerArrayList) {
+                    if (player.getScore() < scoreMin) {
+                        playerLow = player;
+                        scoreMin = player.getScore();
+                    }
+                }
+                if (playerLow.getTour())
+                {
+                    modeEchange = true;
+                    statusChange.setText("Echange en cour");
+                }
+
 
             }
         });
 
         this.add(btnQuite,1,1);
         this.add(btnNext,0,1);
+        this.add(btnSwitch,2,1);
+
 
 
         configStage.show();
@@ -137,62 +164,68 @@ public class GameController extends GridPane {
         public void handle(MouseEvent mouseEvent) {
             //Recup mon objet gridView sur lequelle j'ai clique
             CardView cardView = (CardView) mouseEvent.getSource();
-
             if (!cardView.getTrouver()) {
-                //Au clique on masque l'image
-                if (cardView.imageEstAffiche()) {
-                    cardView.masquerImage();
-                } else {
-                    cardView.afficherImage();
-                    if (GameController.this.cardActual != null) {
-                        if (cardView.equals(GameController.this.cardActual)) {
-                            System.out.println("OK");
-                            GameController.this.playerArrayList.get(GameController.this.playerActual).addScore();
-                            cardView.setTrouver(true);
-                            GameController.this.cardActual.setTrouver(true);
-                            nbrTrouver++;
-                            if(nbrTrouver == nbrPair)
-                            {
-                                int scoreMax = 0;
-                                Player playerWin = null;
-                                for (Player player: playerArrayList) {
-                                    if(player.getScore()> scoreMax)
-                                    {
-                                        playerWin = player;
-                                        scoreMax = player.getScore();
-                                    }
-                                }
-                                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Bravo :" + playerWin.getName());
-
-                                ButtonType buttonQuit = new ButtonType("Quitter");
-                                ButtonType buttonReplay = new ButtonType("Rejouer");
-
-
-                                alert.getButtonTypes().clear();
-                                alert.getButtonTypes().addAll(buttonReplay,buttonQuit);
-                                Optional<ButtonType> buttonType = alert.showAndWait();
-                                if(buttonType.get() == buttonReplay)
-                                {
-                                    gameStage.hide();
-                                    MenuController menu = new MenuController();
-                                }else
-                                {
-                                    System.exit(0);
-                                }
-                            }
-                        } else {
-                            //Masque les cartes qui ne sont pas bonne
-                            cardView.masquerImage();
-                            GameController.this.cardActual.masquerImage();
-                            System.out.println("Deux cartes masqués");
-
-                        }
-                        GameController.this.cardActual = null;
-                        GameController.this.nextTour();
-                    } else {
-                        GameController.this.cardActual = cardView;
+                if (modeEchange) {
+                    if (tmpCard == null)
+                    {
+                        tmpCard = cardView;
+                    }else
+                    {
+                        gridView.changeCard(cardView.getCard(),tmpCard.getCard());
+                        gridView.drawnGrille();
+                        tmpCard = null;
+                        modeEchange = false;
+                        nextTour();
+                        statusChange.setText("");
                     }
-                }
+                }else {
+                            cardView.afficherImage();
+                            if (GameController.this.cardActual != null) {
+                                if (cardView.equals(GameController.this.cardActual)) {
+                                    System.out.println("OK");
+                                    GameController.this.playerArrayList.get(GameController.this.playerActual).addScore();
+                                    cardView.setTrouver(true);
+                                    GameController.this.cardActual.setTrouver(true);
+                                    nbrTrouver++;
+                                    if (nbrTrouver == nbrPair) {
+                                        int scoreMax = 0;
+                                        Player playerWin = null;
+                                        for (Player player : playerArrayList) {
+                                            if (player.getScore() > scoreMax) {
+                                                playerWin = player;
+                                                scoreMax = player.getScore();
+                                            }
+                                        }
+                                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Bravo :" + playerWin.getName());
+
+                                        ButtonType buttonQuit = new ButtonType("Quitter");
+                                        ButtonType buttonReplay = new ButtonType("Rejouer");
+
+
+                                        alert.getButtonTypes().clear();
+                                        alert.getButtonTypes().addAll(buttonReplay, buttonQuit);
+                                        Optional<ButtonType> buttonType = alert.showAndWait();
+                                        if (buttonType.get() == buttonReplay) {
+                                            gameStage.hide();
+                                            MenuController menu = new MenuController();
+                                        } else {
+                                            System.exit(0);
+                                        }
+                                    }
+                                } else {
+                                    //Masque les cartes qui ne sont pas bonne
+                                    cardView.masquerImage();
+                                    GameController.this.cardActual.masquerImage();
+                                    System.out.println("Deux cartes masqués");
+
+                                }
+                                GameController.this.cardActual = null;
+                                GameController.this.nextTour();
+                            } else {
+                                GameController.this.cardActual = cardView;
+                            }
+
+                    }
             }
         }
     }

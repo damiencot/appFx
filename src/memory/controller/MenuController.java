@@ -2,6 +2,8 @@ package memory.controller;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -34,6 +36,8 @@ public class MenuController{
         textInputDialog.setTitle("Memory");
         textInputDialog.setHeaderText("Nombre de joueur entre 1 et 4");
         textInputDialog.setContentText("Nombre de joueurs : ");
+        textInputDialog.getDialogPane().lookupButton(ButtonType.CANCEL).setOpacity(0.0);
+        textInputDialog.getDialogPane().lookupButton(ButtonType.CANCEL).setDisable(true);
 
         Optional<String> resultat = textInputDialog.showAndWait();
         resultat.ifPresent(name->{
@@ -60,7 +64,8 @@ public class MenuController{
         textInputDialog.setTitle("Memory");
         textInputDialog.setHeaderText("Pair de Cartes");
         textInputDialog.setContentText("Nombre de Pair de Cartes entre  2 et 20: ");
-
+        textInputDialog.getDialogPane().lookupButton(ButtonType.CANCEL).setOpacity(0.0);
+        textInputDialog.getDialogPane().lookupButton(ButtonType.CANCEL).setDisable(true);
         Optional<String> resultat = textInputDialog.showAndWait();
         resultat.ifPresent(name->{
             //Regex: Un nombre entre 2 et 9, avec autre chose derriere

@@ -21,8 +21,8 @@ public class CardView extends Pane {
     //Ajoute une image
     private ImageView imageView;
     private GameController.EventClickMouse eventClickMouse;
-    private Boolean bool = false;
-    private Boolean trouver = false;
+    private Boolean bool;
+    private Boolean trouver;
 
 
 
@@ -33,6 +33,16 @@ public class CardView extends Pane {
     public CardView(Card card, GameController.EventClickMouse clickMouse) {
         this.card = card;
         this.eventClickMouse = clickMouse;
+
+        if (this.card.isTrouver())
+        {
+            bool = true;
+            trouver = true;
+        }else
+        {
+            bool = false;
+            trouver = false;
+        }
 
         Rectangle rectangle = new Rectangle(50,50);
         rectangle.setFill(null);
@@ -96,6 +106,7 @@ public class CardView extends Pane {
 
     public void setTrouver(Boolean trouver) {
         this.trouver = trouver;
+        this.card.setTrouver(trouver);
     }
 
 

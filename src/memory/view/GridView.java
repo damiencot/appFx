@@ -17,13 +17,14 @@ public class GridView extends GridPane {
     *
     */
     private ArrayList<CardView> cardView = new ArrayList<>();
+    private ArrayList<Card> cards;
+    private GameController.EventClickMouse eventClickMouse;
 
 
-    public GridView(GameController.EventClickMouse t, int nbrPair) {
+    public GridView(GameController.EventClickMouse eventClickMouse, int nbrPair) {
 
-        int ligne = 0;
-        int colonne = 0;
-        ArrayList<Card> cards = new ArrayList<>();
+        this.eventClickMouse = eventClickMouse;
+        this.cards = new ArrayList<>();
 
         /*
         Boucle sur les images
@@ -47,8 +48,25 @@ public class GridView extends GridPane {
 
         //Collections.shuffle(cards);
 
+        drawnGrille();
+
+    }
+
+    public void changeCard(Card card1, Card card2)
+    {
+        Collections.swap(this.cards, this.cards.indexOf(card1), this.cards.indexOf(card2));
+    }
+
+    public void drawnGrille()
+    {
+        //efface tout les cardView de la grille
+        this.getChildren().clear();
+
+        int ligne = 0;
+        int colonne = 0;
+
         for (Card card: cards) {
-            CardView cv = new CardView(card, t);
+            CardView cv = new CardView(card, this.eventClickMouse);
 
             if (colonne == 4){
                 colonne =0;
@@ -61,7 +79,7 @@ public class GridView extends GridPane {
             this.add(cv,colonne,ligne);
             colonne++;
         }
-
     }
+
 
 }
