@@ -12,8 +12,8 @@ import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-/*
-Classe pour la vue de la Card
+/**
+ * Classe pour la vue de la Card
  */
 public class CardView extends Pane {
 
@@ -74,7 +74,7 @@ public class CardView extends Pane {
         return this.card.getId() == card.getCard().getId();
     }
 
-    //Récupérer mon ImageView = Image de la carte
+    //Récupére mon ImageView = Image de la carte
     public ImageView getImageView() {
         return imageView;
     }

@@ -25,8 +25,8 @@ import java.util.Collections;
 import java.util.Optional;
 
 
-/*
-Grille de jeux(etc...)
+/**
+ * Classe regroupant tout le logique métier pour notre jeu
  */
 public class GameController extends GridPane {
 
@@ -43,6 +43,17 @@ public class GameController extends GridPane {
     private GridView gridView;
     private Label statusChange;
 
+    /**
+     * Constructeur
+     *
+     * Initialisation de nos variables de classe
+     * Création de notre Stage
+     * Gestion de nos différentes cliques de la souris
+     *
+     * @param nbrPlayer
+     * @param nbrPair
+     * @param gameStage
+     */
     public GameController(int nbrPlayer,int nbrPair, Stage gameStage) {
         super();
         this.nbrPair = nbrPair;
@@ -52,11 +63,11 @@ public class GameController extends GridPane {
         this.modeEchange = false;
         this.statusChange = new Label();
         this.add(this.statusChange,0,3);
-        ///Crée l'event et on le charge
+        ///Création d'un event de la souris
         this.eventClickMouse = new EventClickMouse();
         this.playerActual = 0;
         this.gridView = new GridView(this.eventClickMouse, nbrPair);
-        //Grille dans mon controlleur
+        //Grille ajoutée au contrôleur
         this.add(gridView,0,0);
         this.playerArrayList = new ArrayList<>();
 
@@ -78,13 +89,16 @@ public class GameController extends GridPane {
                 GameController.this.gameStage.setWidth(bounds.getWidth());
                 GameController.this.gameStage.setHeight(bounds.getHeight());
 
-                ///Crée un tab de score pour les joueurs
+                //Crée un tableau de score pour les joueurs
                 GameController.this.tabScoreView = new TabScoreView(GameController.this.playerArrayList);
                 GameController.this.add(GameController.this.tabScoreView,1,0);
             }
         });
         this.gameStage.setIconified(true);
 
+        /**
+         * Bouton Quitter
+         */
         Button btnQuite = new Button("Quitter");
         btnQuite.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -93,6 +107,9 @@ public class GameController extends GridPane {
             }
         });
 
+        /**
+         * Bouton Abandonner
+         */
         Button btnAbandon = new Button("Abandonner");
         btnAbandon.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -103,6 +120,9 @@ public class GameController extends GridPane {
             }
         });
 
+        /**
+         * Bouton Recommencer
+         */
         Button btnMelanger = new Button("Recommencer");
         btnMelanger.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -121,6 +141,9 @@ public class GameController extends GridPane {
         });
 
 
+        /**
+         * Joueur Suivant
+         */
         Button btnNext = new Button("Joueur Suivant");
         btnNext.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -129,8 +152,10 @@ public class GameController extends GridPane {
             }
         });
 
-
-        Button btnSwitch = new Button("Echanger");
+        /**
+         * Echanger Cartes
+         */
+        Button btnSwitch = new Button("Echanger Cartes");
         btnSwitch.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -152,6 +177,7 @@ public class GameController extends GridPane {
             }
         });
 
+        //Ajout de nos différents boutons à notre fenêtre et leur position
         this.add(btnQuite,1,1);
         this.add(btnNext,0,1);
         this.add(btnSwitch,2,1);
@@ -167,10 +193,10 @@ public class GameController extends GridPane {
 
     }
 
-    //Tour suivant sur nos joueurs
+    //Tour suivant
     public void nextTour()
     {
-        //Recup le joueur actuelle dans ma liste
+        //Récupère le joueur actuel dans ma liste
         this.playerArrayList.get(this.playerActual).setTour(false);
         this.playerActual++;
         if (this.playerActual == this.playerArrayList.size())
@@ -179,9 +205,9 @@ public class GameController extends GridPane {
         }
         //Tour joueur actuel;
         this.playerArrayList.get(this.playerActual).setTour(true);
-        //Modifie le tab de score
+        //Modifie le tableau de score
         this.getChildren().remove(this.tabScoreView);
-        //Recrée le tab de score a sa place
+        //Recrée le tableau de score
         this.tabScoreView = new TabScoreView(this.playerArrayList);
         this.add(this.tabScoreView,1,0);
 
@@ -193,14 +219,19 @@ public class GameController extends GridPane {
 
         @Override
         public void handle(MouseEvent mouseEvent) {
-            //Recup mon objet gridView sur lequelle j'ai clique
+            //Récupère mon objet gridview sur lequelle j'ai cliqué
             CardView cardView = (CardView) mouseEvent.getSource();
+            //Si la carte trouver est à null
             if (!cardView.getTrouver()) {
+                //Si modeEchange à TRUE
                 if (modeEchange) {
+                    //Aucune action faite
                     if (tmpCard == null)
                     {
                         tmpCard = cardView;
-                    }else
+                    }
+                    //Sinon on interverti notre carte cliquer avec la carte temporaire
+                    else
                     {
                         gridView.changeCard(cardView.getCard(),tmpCard.getCard());
                         gridView.drawnGrille();
@@ -209,18 +240,29 @@ public class GameController extends GridPane {
                         nextTour();
                         statusChange.setText("");
                     }
-                }else {
+                }
+                //Sinon
+                else{
+                            //affiche l'image
                             cardView.afficherImage();
+                            //Si carte actuelle est différent de null
                             if (GameController.this.cardActual != null) {
+                                //On vérifie si elles sont identiques
                                 if (cardView.equals(GameController.this.cardActual)) {
                                     System.out.println("OK");
+                                    //On modifie le score
                                     GameController.this.playerArrayList.get(GameController.this.playerActual).addScore();
                                     cardView.setTrouver(true);
                                     GameController.this.cardActual.setTrouver(true);
+                                    //Incrémente le tour
                                     nbrTrouver++;
+                                    //Si le nombre de cartes trouver est identique au nombre du pair indiqué au début du jeu
                                     if (nbrTrouver == nbrPair) {
+                                        //Réinitialise les différentes informations
                                         int scoreMax = 0;
                                         Player playerWin = null;
+                                        //Parcours notre tableau de joueur qui nous
+                                        //permet après d'afficher certaines informations du joueur gagnant
                                         for (Player player : playerArrayList) {
                                             if (player.getScore() > scoreMax) {
                                                 playerWin = player;
@@ -244,7 +286,7 @@ public class GameController extends GridPane {
                                         }
                                     }
                                 } else {
-                                    //Masque les cartes qui ne sont pas bonne
+                                    //Masque les cartes qui ne sont pas bonnes
                                     cardView.masquerImage();
                                     GameController.this.cardActual.masquerImage();
                                     System.out.println("Deux cartes masqués");

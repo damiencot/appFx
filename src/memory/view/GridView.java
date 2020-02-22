@@ -13,22 +13,23 @@ import java.util.Collections;
 
 public class GridView extends GridPane {
 
-    /*
-    *
-    */
     private ArrayList<CardView> cardView = new ArrayList<>();
     private ArrayList<Card> cards;
     private GameController.EventClickMouse eventClickMouse;
 
-
+    /**
+     * Constructeur de notre Grid
+     * @param eventClickMouse
+     * @param nbrPair
+     */
     public GridView(GameController.EventClickMouse eventClickMouse, int nbrPair) {
 
         this.eventClickMouse = eventClickMouse;
         this.cards = new ArrayList<>();
 
-        /*
-        Boucle sur les images
-         */
+        /**
+        * Boucle sur les images
+        **/
         for (int i = 1; i < nbrPair + 1; i++) {
             Card card1 = new Card();
             card1.setId(i);
@@ -52,6 +53,11 @@ public class GridView extends GridPane {
 
     }
 
+    /**
+     * Échange nos cartes de places
+     * @param card1
+     * @param card2
+     */
     public void changeCard(Card card1, Card card2)
     {
         Collections.swap(this.cards, this.cards.indexOf(card1), this.cards.indexOf(card2));
@@ -59,7 +65,7 @@ public class GridView extends GridPane {
 
     public void drawnGrille()
     {
-        //efface tout les cardView de la grille
+        //efface tous les cardView de la grille
         this.getChildren().clear();
 
         int ligne = 0;

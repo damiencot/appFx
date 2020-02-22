@@ -10,12 +10,15 @@ import memory.controller.MenuController;
 
 public class Main extends Application {
 
-    /*
-        Demarrage de l'application
+    /**
+     * Démarrage de l'application
+     * @param primaryStage
+     * @throws Exception
      */
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        //Création de notre fenêtre
         MenuController menu = new MenuController();
 
     }

@@ -8,11 +8,11 @@ import java.util.ArrayList;
 public class TabScoreView extends GridPane {
 
 
-    //Creation table score
+    //Création table score
     public TabScoreView(ArrayList<Player> playerArrayList) {
         int ligne =0;
         //Pour chaque joueur, je crée un scoreView
-        //Afficher les objets le score
+        //Afficher les objets de score
         for (Player player:playerArrayList) {
             ScoreView score = new ScoreView(player);
             this.add(score,0,ligne);

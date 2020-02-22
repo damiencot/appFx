@@ -13,6 +13,9 @@ import memory.view.ScoreView;
 
 import java.util.ArrayList;
 
+/**
+ * Classe correspondant aux actions liées au joueur
+ */
 public class PlayerController extends GridPane {
 
     private ArrayList<Player> playerArrayList;

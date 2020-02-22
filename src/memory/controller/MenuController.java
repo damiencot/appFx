@@ -10,12 +10,19 @@ import javafx.stage.Stage;
 
 import java.util.Optional;
 
+/**
+ * Classe générant l'affichage de notre fenêtre
+ */
 public class MenuController{
 
     private int nbrPlayer;
     private int nbrPair;
 
 
+    /**
+     * Constructeur Classe MenuController
+     * Retourne notre fenetre
+     */
     public MenuController() {
 
         showNbrPlayer();
@@ -30,6 +37,9 @@ public class MenuController{
 
     }
 
+    /**
+     * Définit notre fenêtre nombre de joueurs
+     */
     public void showNbrPlayer()
     {
         TextInputDialog textInputDialog = new TextInputDialog("");
@@ -58,6 +68,9 @@ public class MenuController{
     }
 
 
+    /**
+     * Définit notre fenêtre nombre de Pair voulus dans notre jeux
+     */
     public void shownbrPair()
     {
         TextInputDialog textInputDialog = new TextInputDialog("");
