@@ -24,8 +24,6 @@ public class CardView extends Pane {
     private Boolean bool;
     private Boolean trouver;
 
-
-
     /**
      * @param card
      * @param clickMouse
@@ -76,7 +74,7 @@ public class CardView extends Pane {
         return this.card.getId() == card.getCard().getId();
     }
 
-    //Recup mon ImageView = Image de la carte
+    //Récupérer mon ImageView = Image de la carte
     public ImageView getImageView() {
         return imageView;
     }

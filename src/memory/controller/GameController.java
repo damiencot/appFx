@@ -167,6 +167,7 @@ public class GameController extends GridPane {
 
     }
 
+    //Tour suivant sur nos joueurs
     public void nextTour()
     {
         //Recup le joueur actuelle dans ma liste
